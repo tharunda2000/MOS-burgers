@@ -1,5 +1,7 @@
 let customerList = [];
 
+
+
 function reset () {
 
     document.getElementById("idIn").value="",
@@ -34,6 +36,7 @@ function setText () {
 
     
     reset();
+    loadTable();
     
     
 }
@@ -73,6 +76,8 @@ function loadTable(){
 
 }
 
+
+loadTable();
 
 
 
