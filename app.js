@@ -22,12 +22,12 @@ function resetStorage () {
 function setText () {
     
       customerList.push({
-        id : document.getElementById("idIn").value,
-        firstName : document.getElementById("fNameIn").value,
-        lastName : document.getElementById("lNameIn").value,
+        
+        name : document.getElementById("nameIn").value,
         address : document.getElementById("addressIn").value,
-        age : document.getElementById("ageIn").value,
-        birthday : document.getElementById("bdayIn").value
+        mobile : document.getElementById("mobileIn").value,
+        email : document.getElementById("emailIn").value,
+        
     })
 
     let cus = JSON.stringify(customerList.concat(JSON.parse(localStorage.getItem(JSON.stringify(localStorage.length-1)))));
@@ -42,37 +42,54 @@ function setText () {
 }
 
 function loadTable(){
-    
-    let customerListLocal = JSON.parse(localStorage.getItem(JSON.stringify(localStorage.length-1)));
 
-    let body =`<tr>
-                    <th class="border border-gray-300 dark:border-gray-600 bg-gray-300">id</th>
-                    <th class="border border-gray-300 dark:border-gray-600 bg-gray-300">firstName</th>
-                    <th class="border border-gray-300 dark:border-gray-600 bg-gray-300">lastName</th>
-                    <th class="border border-gray-300 dark:border-gray-600 bg-gray-300">address</th>
-                    <th class="border border-gray-300 dark:border-gray-600 bg-gray-300">age</th>
-                    <th class="border border-gray-300 dark:border-gray-600 bg-gray-300">birthday</th>
-                    
-                </tr>`
+    fetch(`http://localhost:9001/customers` )
+    .then(res => res.json())
+    .then(data=>{
+        
+        console.log(data);
 
-    for(data of customerListLocal){
+    let body =`<div class="flex justify-center  p-4 text-lg ">
+                <div id="" class="flex gap-30 bg-gray-400 p-4 items-center justify-center px-10 font-bold">
+
+                  <div class="flex flex-col items-center justify-center w-1">ID</div>
+                  <div class="flex flex-col items-center justify-center w-40">Name</div>
+                  <div class="flex flex-col items-center justify-center w-50">Address</div>
+                  <div class="flex flex-col items-center justify-center w-10">Mobile</div>
+                  <div class="flex flex-col items-center justify-center w-30">Email</div>
+
+                </div>
+              </div>`
+
+    for(item of data){
 
        body+=`
 
-                <tr>
-                    <td class="border border-gray-200 dark:border-gray-600 bg-gray-300">${data.id}</td>
-                    <td class="border border-gray-200 dark:border-gray-600 bg-gray-300">${data.firstName}</td>
-                    <td class="border border-gray-200 dark:border-gray-600 bg-gray-300">${data.lastName}</td>
-                    <td class="border border-gray-200 dark:border-gray-600 bg-gray-300">${data.address}</td>
-                    <td class="border border-gray-200 dark:border-gray-600 bg-gray-300">${data.age}</td>
-                    <td class="border border-gray-200 dark:border-gray-600 bg-gray-300">${data.birthday}</td>
-                    
-                </tr>
+                <div class="flex justify-center  p-4 text-lg ">
+                <div id="" class="flex gap-30 bg-gray-300 p-4 items-center justify-center px-10 h-20 ">
+
+                  <div class="flex flex-col items-center justify-center w-1">${item.id}</div>
+                  <div class="flex flex-col items-center justify-center w-40">${item.name}</div>
+                  <div class="flex flex-col items-center justify-center w-50">${item.address}</div>
+                  <div class="flex flex-col items-center justify-center w-10 ">${item.mobile}</div>
+                  <div class="flex flex-col items-center justify-center w-30 ">${item.email}</div>
+
+                </div>
+              </div>
        
        `; 
         document.getElementById("table").innerHTML=body;
 
     }
+        
+
+        
+        
+    })
+    
+    
+
+    
 
 }
 
