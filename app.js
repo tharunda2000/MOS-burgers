@@ -19,27 +19,6 @@ function resetStorage () {
 
 }
 
-function setText () {
-    
-      customerList.push({
-        
-        name : document.getElementById("nameIn").value,
-        address : document.getElementById("addressIn").value,
-        mobile : document.getElementById("mobileIn").value,
-        email : document.getElementById("emailIn").value,
-        
-    })
-
-    let cus = JSON.stringify(customerList.concat(JSON.parse(localStorage.getItem(JSON.stringify(localStorage.length-1)))));
-
-    localStorage.setItem(JSON.stringify(localStorage.length),cus)
-
-    
-    reset();
-    loadTable();
-    
-    
-}
 
 function loadTable(){
 
@@ -57,6 +36,7 @@ function loadTable(){
                   <div class="flex flex-col items-center justify-center w-50">Address</div>
                   <div class="flex flex-col items-center justify-center w-10">Mobile</div>
                   <div class="flex flex-col items-center justify-center w-30">Email</div>
+                  <div class="flex flex-col items-center justify-center w-1"></i></div>
 
                 </div>
               </div>`
@@ -73,6 +53,8 @@ function loadTable(){
                   <div class="flex flex-col items-center justify-center w-50">${item.address}</div>
                   <div class="flex flex-col items-center justify-center w-10 ">${item.mobile}</div>
                   <div class="flex flex-col items-center justify-center w-30 ">${item.email}</div>
+                  <div class="flex flex-col items-center justify-center w-1"><i class="ri-delete-bin-2-fill text-3xl text-red-600 hover:text-red-800 cursor-pointer" onclick="deleteCustomer(${item.id})"></i></div>
+                  
 
                 </div>
               </div>
@@ -92,6 +74,48 @@ function loadTable(){
     
 
 }
+
+function deleteCustomer(id){
+
+  fetch(`http://localhost:9001/customer/${id}`,{
+    method:"DELETE",
+  }).then(()=>{
+    alert("Customer DELETED");
+    loadTable();
+  });
+
+}
+
+function setText () {
+
+
+     const customer = {
+      name: document.getElementById("nameIn").value,
+      email: document.getElementById("emailIn").value,
+      mobile: document.getElementById("mobileIn").value,
+      address: document.getElementById("addressIn").value
+    };
+
+    fetch("http://localhost:9001/customer", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(customer)
+    })
+    .then(() => {
+      alert("Customer added!");
+      reset();
+      loadTable();
+    });
+
+    
+
+    
+    
+    
+    
+}
+
+
 
 
 loadTable();
